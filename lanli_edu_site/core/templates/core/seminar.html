@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+
+{% block extra_js %}
+<script src="http://imgcache.qq.com/tencentvideo_v1/tvp/js/tvp.player_v2.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function() {
+        var video = new tvp.VideoInfo();
+        video.setVid("i001216370f");
+        var player =new tvp.Player();
+        player.create({
+            width:480,
+            height:360,
+            video:video,
+            modId:"mod_player",
+            autoplay:true
+        });
+    });
+
+</script>
+{% endblock %}
+
+{% block header %}
+<header class="bar bar-nav">
+    <a class="button button-link button-nav pull-left" href="{% url 'page_edu' %}" data-transition='slide-out'>
+        <span class="icon icon-left"></span>
+        返回
+    </a>
+    <h1 class="title">讲座视频</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="mod_player"></div>
+{% endblock %}

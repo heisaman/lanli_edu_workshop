@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>我的生活</title>
@@ -12,45 +12,54 @@
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
 
-
+    <script type='text/javascript' src='https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js' charset='utf-8'></script>
     <script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
     <script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
     <script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
-  </head>
-  <body>
-    <div class="page-group">
-        <div class="page page-current">
-            <div>
-                {% block header %}
-              <header class="bar bar-nav">
+
+
+    {% block extra_js %}
+    {% endblock %}
+    <script>
+        $(document).ready(function() {
+
+        });
+    </script>
+</head>
+<body>
+<div class="page-group">
+    <div class="page page-current">
+        <div>
+            {% block header %}
+            <header class="bar bar-nav">
                 <!--  <a class="button button-link button-nav pull-left" href="/demos/card" data-transition='slide-out'>
                   <span class="icon icon-left"></span>
                   返回
                 </a>  -->
                 <h1 class="title">兰里教育坊</h1>
-              </header>
-                {% endblock %}
-              <nav class="bar bar-tab">
-                <a class="tab-item active" href="{% url 'page_edu'%}">
-                  <span class="icon icon-home"></span>
-                  <span class="tab-label">教育坊</span>
+            </header>
+            {% endblock %}
+            <nav class="bar bar-tab">
+                <a id="page_edu" class="tab-item {% if request.path == '/edu/' %}active{% endif %}" href="{% url 'page_edu'%}">
+                    <span class="icon icon-home"></span>
+                    <span class="tab-label">教育坊</span>
                 </a>
-                <a class="tab-item" href="{% url 'page_interaction'%}">
-                  <span class="icon icon-star"></span>
-                  <span class="tab-label">师生互动</span><span class="badge">2</span>
+                <a id="page_interaction" class="tab-item {% if request.path == '/interaction/' %}active{% endif %}" href="{% url 'page_interaction'%}">
+                    <span class="icon icon-star"></span>
+                    <span class="tab-label">师生互动</span>
                 </a>
-                <a class="tab-item" href="{% url 'page_home'%}">
-                  <span class="icon icon-me"></span>
-                  <span class="tab-label">个人中心</span>
+                <a id="page_home" class="tab-item {% if request.path == '/home/' %}active{% endif %}" href="{% url 'page_home'%}">
+                    <span class="icon icon-me"></span>
+                    <span class="tab-label">个人中心</span>
                 </a>
-              </nav>
-              <div class="content">
+            </nav>
+            <div class="content">
                 {% block content %}
                 {% endblock %}
-              </div>
             </div>
         </div>
     </div>
+</div>
 
-  </body>
+</body>
 </html>

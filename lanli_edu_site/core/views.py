@@ -13,6 +13,10 @@ def index(request):
     return render(request, "core/index.html")
 
 
+def seminar(request):
+    return render(request, "core/seminar.html")
+
+
 def interaction(request):
     return render(request, "core/interaction.html")
 
