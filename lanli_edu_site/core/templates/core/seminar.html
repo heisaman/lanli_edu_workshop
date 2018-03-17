@@ -6,11 +6,11 @@
 <script>
     $(document).ready(function() {
         var video = new tvp.VideoInfo();
-        video.setVid("i001216370f");
+        video.setVid("s0561lcuwgr");
         var player =new tvp.Player();
         player.create({
-            width:480,
-            height:360,
+            width:360,
+            height:260,
             video:video,
             modId:"mod_player",
             autoplay:true
@@ -22,7 +22,7 @@
 
 {% block header %}
 <header class="bar bar-nav">
-    <a class="button button-link button-nav pull-left" href="{% url 'page_edu' %}" data-transition='slide-out'>
+    <a class="button button-link button-nav pull-left" href="javascript: history.go(-1)" data-transition='slide-out'>
         <span class="icon icon-left"></span>
         返回
     </a>

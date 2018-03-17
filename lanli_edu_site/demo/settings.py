@@ -154,10 +154,8 @@ INSTALLED_APPS = (
     'xadmin',
     'crispy_forms',
     'reversion',
-    'bootstrap3',
 
-    'app',
-    'core',
+    'lanli_edu_site.core',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
@@ -199,11 +197,7 @@ LOGGING = {
     }
 }
 
+AUTH_USER_MODEL = 'core.LanliUser'
 
-# Settings for django-bootstrap3
-BOOTSTRAP3 = {
-    'set_required': False,  # For Django <= 1.8 only
-    'error_css_class': 'bootstrap3-error',
-    'required_css_class': 'bootstrap3-required',
-    'javascript_in_head': True,
-}
+XADMIN_TITLE = "兰里教育坊"
+XADMIN_FOOTER_TITLE = "兰里教育坊"
