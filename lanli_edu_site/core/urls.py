@@ -3,15 +3,19 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url
 
-from .views import hello, index, interaction, home, seminar, lectures
+from .views import index, edu, interaction, home, seminar, lectures, HomeAuthView, login
 
 urlpatterns = [
-    url(r'^$', hello, name='index'),
-    url(r'^edu/$', index, name='page_edu'),
+    url(r'^accounts/login/$', login, name='login'),
+
+    url(r'^$', index, name='index'),
+    url(r'^edu/$', edu, name='page_edu'),
     url(r'^interaction/$', interaction, name='page_interaction'),
     url(r'^home/$', home, name='page_home'),
     url(r'^seminar/$', seminar, name='seminar'),
     url(r'^lectures/$', lectures, name='lectures'),
+
+    url(r'^home/auth/$', HomeAuthView.as_view(), name='page_home_auth'),
     #url(r'^formset$', DefaultFormsetView.as_view(), name='formset_default'),
     #url(r'^form$', DefaultFormView.as_view(), name='form_default'),
     #url(r'^form_by_field$', DefaultFormByFieldView.as_view(), name='form_by_field'),

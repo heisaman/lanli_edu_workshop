@@ -201,3 +201,12 @@ AUTH_USER_MODEL = 'core.LanliUser'
 
 XADMIN_TITLE = "兰里教育坊"
 XADMIN_FOOTER_TITLE = "兰里教育坊"
+
+APPID = 'wx1663460930b90e0a'
+APPSECRET = 'appsecret'
+WECHAT_AUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize"
+WECHAT_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token"
+WECHAT_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo"
+SCOPE = 'snsapi_userinfo'
+STATE = ''
+LANG = 'zh_CN'
