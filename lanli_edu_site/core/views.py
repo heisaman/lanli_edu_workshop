@@ -79,11 +79,12 @@ class LoginView(WechatViewSet):
             'country': user_info['country'].encode('iso8859-1').decode('utf-8'),
             'avatar': user_info['headimgurl'],
             'username': user_info['openid'],
-            'password': ''
+            'password': '123456'
         }
         if not LanliUser.objects.filter(username=user_data['username']).exists():
             LanliUser.objects.create(**user_data)
-        user = authenticate(user_data['username'], user_data['password'])
+        user = authenticate(username=user_data['username'], password=user_data['password'])
+        print("user {} is authencated? {}".format(user_data['username'], user.is_authenticated()))
         login(request, user)
         # 授权登录成功，进入主页
         print("登录成功，进入主页!")
