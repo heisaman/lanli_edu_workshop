@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseServerError
 from django.views.generic import View
@@ -78,14 +78,13 @@ class LoginView(WechatViewSet):
             'city': user_info['city'].encode('iso8859-1').decode('utf-8'),
             'country': user_info['country'].encode('iso8859-1').decode('utf-8'),
             'avatar': user_info['headimgurl'],
-            'username': user_info['openid']
+            'username': user_info['openid'],
+            'password': ''
         }
-        user = LanliUser.objects.filter(username=user_data['openid'])
-        if user.count() == 0:
-            user = LanliUser.objects.create(password='', **user_data)
-            login(request, user)
-        else:
-            login(request, user.first())
+        if not LanliUser.objects.filter(username=user_data['username']).exists():
+            LanliUser.objects.create(**user_data)
+        user = authenticate(user_data['username'], user_data['password'])
+        login(request, user)
         # 授权登录成功，进入主页
         print("登录成功，进入主页!")
         return home(request)
