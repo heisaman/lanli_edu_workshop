@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url
 
-from .views import index, edu, interaction, home, seminar, lectures, HomeAuthView, login
+from .views import index, edu, interaction, home, seminar, lectures, HomeAuthView, LoginView
 
 urlpatterns = [
-    url(r'^accounts/login/$', login, name='login'),
+    url(r'^accounts/login/$', LoginView.as_view(), name='login'),
 
     url(r'^$', index, name='index'),
     url(r'^edu/$', edu, name='page_edu'),

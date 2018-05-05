@@ -77,9 +77,9 @@ class LanliUser(AbstractUser):
         (TEACHER, '老师')
     )
 
-    MALE = 0
-    FEMALE = 1
-    UNKNOWN = 2
+    MALE = 1
+    FEMALE = 2
+    UNKNOWN = 0
     SEXES = (
         (MALE, '男'),
         (FEMALE, '女'),
@@ -96,6 +96,10 @@ class LanliUser(AbstractUser):
     type = models.IntegerField(verbose_name='身份', choices=TYPES, default=STUDENT)
     sex = models.IntegerField(verbose_name='性别', choices=SEXES, default=MALE)
     nickname = models.CharField(verbose_name='昵称', max_length=50, blank=True)
+    avatar = models.CharField(verbose_name='头像', max_length=200, blank=True)
+    province = models.CharField(verbose_name='省份', max_length=50, blank=True)
+    city = models.CharField(verbose_name='城市', max_length=50, blank=True)
+    country = models.CharField(verbose_name='国家', max_length=50, blank=True, null=True)
     birthday = models.DateField(verbose_name='生日', blank=True, null=True)
     mobile = models.CharField(verbose_name='手机号', max_length=50, blank=True)
     state = models.CharField(verbose_name='会员状态', max_length=40, choices=STATE_TYPES, default=COMMON)

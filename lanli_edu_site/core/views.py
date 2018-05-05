@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseServerError
 from django.views.generic import View
 from datetime import datetime
+from urllib import parse
 
 from .utils import WechatLogin
 
@@ -38,6 +39,9 @@ def interaction(request):
 
 @login_required
 def home(request):
+    context = {
+        ""
+    }
     return render(request, "core/home.html")
 
 
@@ -54,9 +58,14 @@ class HomeAuthView(WechatViewSet):
 class LoginView(WechatViewSet):
     def get(self, request):
         print("get_full_path: {}".format(request.get_full_path()))
-        print("next parameter: {}".format(request.GET.get("next")))
-        code = request.GET['code']
+        origin_url = parse.unquote(request.GET.get("next"))
+        print("next parameter: {}".format(origin_url))
+
+        parsed = parse.urlparse(origin_url)
+        code = parse.parse_qs(parsed.query)['code'][0]
+        state = parse.parse_qs(parsed.query)['state'][0]
         token, openid = self.wechat_api.get_access_token(code)
+        print("token: {}, openid:{}".format(token, openid))
         if token is None or openid is None:
             return HttpResponseServerError('get code error')
         user_info, error = self.wechat_api.get_user_info(token, openid)
@@ -69,17 +78,15 @@ class LoginView(WechatViewSet):
             'city': user_info['city'].encode('iso8859-1').decode('utf-8'),
             'country': user_info['country'].encode('iso8859-1').decode('utf-8'),
             'avatar': user_info['headimgurl'],
-            'openid': user_info['openid']
+            'username': user_info['openid']
         }
-        user = LanliUser.objects.filter(is_effective=True).filter(wechat=user_data['openid'])
+        user = LanliUser.objects.filter(username=user_data['openid'])
         if user.count() == 0:
-            user = LanliUser.objects.create(username=user_data['nickname'],
-                                              wechat_avatar=user_data['avatar'],
-                                              wechat=user_data['openid'],
-                                              password='')
+            user = LanliUser.objects.create(password='', **user_data)
             login(request, user)
         else:
             login(request, user.first())
         # 授权登录成功，进入主页
+        print("登录成功，进入主页!")
         return home(request)
 
