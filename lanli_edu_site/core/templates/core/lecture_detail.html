@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block extra_js %}
+
+<script>
+$(document).on('click','a.button', function (event) {
+  event.preventDefault();
+  $.ajax({
+      method: "POST",
+      url: {% url "lecture_signup" %},
+      data: { user_id: {{request.user.id}}, lecture_id: {{id}} }
+    }).done(function( msg ) {
+        $.toast("报名成功！");
+        history.go(-1);
+    });
+});
+
+</script>
+
+{% block header %}
+<header class="bar bar-nav">
+    <a class="button button-link button-nav pull-left" href="javascript: history.go(-1)" data-transition='slide-out'>
+        <span class="icon icon-left"></span>
+        返回
+    </a>
+    <h1 class="title">讲座报名</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+    <div class="content-block">
+      <h2>{{title}}</h2>
+      <p>{{content}}</p>
+      <p><a href="#" class="button button-big button-fill button-success">报名</a></p>
+    </div>
+{% endblock %}

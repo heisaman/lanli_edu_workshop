@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseServerError, JsonResponse
 from django.views.generic import View
 from datetime import datetime
 from urllib import parse
@@ -34,6 +34,31 @@ def lectures(request):
     expired_lectures = Lecture.objects.filter(expired_time__lt=datetime.now())
     return render(request, "core/lectures.html",
                   {"valid_lectures": valid_lectures, "expired_lectures": expired_lectures})
+
+
+@login_required
+def lecture_detail(request, id):
+    lecture = Lecture.objects.get(id=id)
+    context = {
+        "id": lecture.id,
+        "title": lecture.title,
+        "content": lecture.content
+    }
+    return render(request, "core/lecture_detail.html", context=context)
+
+
+@login_required
+def lecture_signup(request):
+    user_id = request.POST.get("user_id")
+    lecture_id = request.POST.get("lecture_id")
+    user = LanliUser.objects.get(id=user_id)
+    lecture = Lecture.objects.get(id=lecture_id)
+    user.attended_lectures.add(lecture)
+    return JsonResponse({
+            'code': 0,
+            'data': None,
+            'msg': "Lecture sign up successfully."
+        })
 
 
 @login_required

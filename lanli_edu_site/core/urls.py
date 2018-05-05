@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url
 
-from .views import index, edu, interaction, home, seminar, lectures, experience, photos, \
+from .views import index, edu, interaction, home, seminar, lectures, lecture_detail, lecture_signup, \
+    experience, photos, \
     teachers, books, home_school, userinfo, history_lectures, study_history, notifications,\
     HomeAuthView, LoginView, LecturesAuthView, SeminarAuthView, ExperienceAuthView, PhotosAuthView,\
     TeachersAuthView, BooksAuthView, HomeSchoolAuthView
@@ -14,6 +15,8 @@ urlpatterns = [
     url(r'^$', index, name='index'),
     url(r'^edu/$', edu, name='page_edu'),
     url(r'^lectures/$', lectures, name='lectures'),
+    url(r'^lectures/(?P<id>\d+)/$', lecture_detail, name='lecture_detail'),
+    url(r'^lecture/signup/$', lecture_signup, name='lecture_signup'),
     url(r'^seminar/$', seminar, name='seminar'),
     url(r'^experience/$', experience, name='experience'),
     url(r'^photos/$', photos, name='photos'),
