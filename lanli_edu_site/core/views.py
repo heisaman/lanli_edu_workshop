@@ -18,14 +18,17 @@ def index(request):
     return HttpResponse(html)
 
 
+@login_required
 def edu(request):
     return render(request, "core/index.html")
 
 
+@login_required
 def seminar(request):
     return render(request, "core/seminar.html")
 
 
+@login_required
 def lectures(request):
     valid_lectures = Lecture.objects.filter(expired_time__gt=datetime.now())
     expired_lectures = Lecture.objects.filter(expired_time__lt=datetime.now())
@@ -33,14 +36,44 @@ def lectures(request):
                   {"valid_lectures": valid_lectures, "expired_lectures": expired_lectures})
 
 
+@login_required
+def experience(request):
+    return render(request, "core/seminar.html")
+
+
+@login_required
+def photos(request):
+    valid_lectures = Lecture.objects.filter(expired_time__gt=datetime.now())
+    expired_lectures = Lecture.objects.filter(expired_time__lt=datetime.now())
+    return render(request, "core/lectures.html",
+                  {"valid_lectures": valid_lectures, "expired_lectures": expired_lectures})
+
+
+@login_required
 def interaction(request):
     return render(request, "core/interaction.html")
 
 
 @login_required
+def teachers(request):
+    return render(request, "core/seminar.html")
+
+
+@login_required
+def books(request):
+    valid_lectures = Lecture.objects.filter(expired_time__gt=datetime.now())
+    expired_lectures = Lecture.objects.filter(expired_time__lt=datetime.now())
+    return render(request, "core/lectures.html",
+                  {"valid_lectures": valid_lectures, "expired_lectures": expired_lectures})
+
+
+@login_required
+def home_school(request):
+    return render(request, "core/interaction.html")
+
+@login_required
 def home(request):
     context = {
-        ""
     }
     return render(request, "core/home.html")
 
@@ -55,13 +88,55 @@ class HomeAuthView(WechatViewSet):
         return redirect(url)
 
 
+class LecturesAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/lectures/")
+        return redirect(url)
+
+
+class SeminarAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/seminar/")
+        return redirect(url)
+
+
+class ExperienceAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/experience/")
+        return redirect(url)
+
+
+class PhotosAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/photos/")
+        return redirect(url)
+
+
+class TeachersAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/teachers/")
+        return redirect(url)
+
+
+class BooksAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/books/")
+        return redirect(url)
+
+
+class HomeSchoolAuthView(WechatViewSet):
+    def get(self, request):
+        url = self.wechat_api.get_code_url("http://www.lanliedu.com/home-school/")
+        return redirect(url)
+
+
 class LoginView(WechatViewSet):
     def get(self, request):
-        print("get_full_path: {}".format(request.get_full_path()))
         origin_url = parse.unquote(request.GET.get("next"))
         print("next parameter: {}".format(origin_url))
 
         parsed = parse.urlparse(origin_url)
+        print(parsed)
         code = parse.parse_qs(parsed.query)['code'][0]
         state = parse.parse_qs(parsed.query)['state'][0]
         token, openid = self.wechat_api.get_access_token(code)
@@ -79,14 +154,16 @@ class LoginView(WechatViewSet):
             'country': user_info['country'].encode('iso8859-1').decode('utf-8'),
             'avatar': user_info['headimgurl'],
             'username': user_info['openid'],
-            'password': '123456'
+            'password': ''
         }
         if not LanliUser.objects.filter(username=user_data['username']).exists():
             LanliUser.objects.create(**user_data)
-        user = authenticate(username=user_data['username'], password=user_data['password'])
-        print("user {} is authencated? {}".format(user_data['username'], user.is_authenticated()))
+        else:
+            user = LanliUser.objects.filter(username=user_data['username']).first()
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        # user = authenticate(username=user_data['username'], password=user_data['password'])
+        # print("user {} is authencated? {}".format(user_data['username'], user.is_authenticated()))
         login(request, user)
         # 授权登录成功，进入主页
-        print("登录成功，进入主页!")
-        return home(request)
+        return redirect(parsed.path)
 
