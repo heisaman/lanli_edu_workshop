@@ -14,5 +14,9 @@ from lanli_edu_site.core import urls as core_urls
 urlpatterns = [
     url(r'^admin/', include(xadmin.site.urls)),
 
-    url(r'^', include(core_urls))
+    url(r'^', include(core_urls)),
+
+    url(r'^(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root':'/root/lanli_edu_workshop/lanli_edu_site/static',
+    }),
 ]
