@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+
+{% block header %}
+<header class="bar bar-nav">
+    <a class="button button-link button-nav pull-left" href="{% url 'page_home'%}" data-transition='slide-out'>
+        <span class="icon icon-left"></span>
+        返回
+    </a>
+    <h1 class="title">个人档案</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+<div>
+    <div class="overview"></div>
+    <div class="line"></div>
+    <div class="content-area">
+        <div class="order-info">
+            <p class="info _flex">
+                <span class="info-name">昵称</span>：
+                <span class="info-detail _detail" style="word-break: keep-all;">{{request.user.nickname}}</span>
+            </p>
+            <p class="info">
+                <span class="info-name">性别</span>：
+                <span class="info-detail">{{ sex }}</span>
+            </p>
+            <p class="info">
+                <span class="info-name">身份</span>：
+                <span class="info-detail">{{ type }}</span>
+            </p>
+            <p class="info">
+                <span class="info-name">国家</span>：
+                <span class="info-detail">{{request.user.country}}</span>
+            </p>
+        </div>
+        <div class="order-detail">
+            <p class="info">
+                <span class="info-name space-2">余额</span>：
+                <span class="info-detail">{{request.user.money}}</span>
+            </p>
+            <p class="info">
+                <span class="info-name space-2">备注</span>：
+                <span class="info-detail">{{request.user.memo}}</span>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

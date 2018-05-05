@@ -78,6 +78,33 @@ def home(request):
     return render(request, "core/home.html")
 
 
+@login_required
+def userinfo(request):
+    context = {
+        "sex": "男" if request.user.sex == 1 else "女" if request.user.sex == 2 else "未知",
+        "type": "学生" if request.user.type == 1 else "老师"
+    }
+    return render(request, "core/userinfo.html", context=context)
+
+
+@login_required
+def history_lectures(request):
+    return render(request, "core/seminar.html")
+
+
+@login_required
+def study_history(request):
+    valid_lectures = Lecture.objects.filter(expired_time__gt=datetime.now())
+    expired_lectures = Lecture.objects.filter(expired_time__lt=datetime.now())
+    return render(request, "core/lectures.html",
+                  {"valid_lectures": valid_lectures, "expired_lectures": expired_lectures})
+
+
+@login_required
+def notifications(request):
+    return render(request, "core/interaction.html")
+
+
 class WechatViewSet(View):
     wechat_api = WechatLogin()
 
@@ -133,10 +160,7 @@ class HomeSchoolAuthView(WechatViewSet):
 class LoginView(WechatViewSet):
     def get(self, request):
         origin_url = parse.unquote(request.GET.get("next"))
-        print("next parameter: {}".format(origin_url))
-
         parsed = parse.urlparse(origin_url)
-        print(parsed)
         code = parse.parse_qs(parsed.query)['code'][0]
         state = parse.parse_qs(parsed.query)['state'][0]
         token, openid = self.wechat_api.get_access_token(code)
@@ -157,7 +181,7 @@ class LoginView(WechatViewSet):
             'password': ''
         }
         if not LanliUser.objects.filter(username=user_data['username']).exists():
-            LanliUser.objects.create(**user_data)
+            user = LanliUser.objects.create(**user_data)
         else:
             user = LanliUser.objects.filter(username=user_data['username']).first()
         user.backend = 'django.contrib.auth.backends.ModelBackend'
