@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+
+{% block header %}
+<header class="bar bar-nav">
+    <a class="button button-link button-nav pull-left" href="{% url 'page_home'%}" data-transition='slide-out'>
+        <span class="icon icon-left"></span>
+        返回
+    </a>
+    <h1 class="title">讲座记录</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+    <h3 class="title">我参加过的讲座</h3>
+    <div class="content-block">
+        <div class="list-block media-list">
+            <ul>
+              {% for lecture in my_lectures  %}
+              <li>
+                <a href="{% url 'lecture_detail' lecture.id %}" class="item-link item-content" >
+                  <div class="item-media"><span class="icon icon-picture"></span></div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">{{lecture.title}}</div>
+                    </div>
+                    <div class="item-text">{{lecture.video_url}}</div>
+                  </div>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

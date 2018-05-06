@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
 from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from urllib import parse
 
@@ -48,6 +49,7 @@ def lecture_detail(request, id):
 
 
 @login_required
+@csrf_exempt
 def lecture_signup(request):
     user_id = request.POST.get("user_id")
     lecture_id = request.POST.get("lecture_id")
@@ -114,7 +116,8 @@ def userinfo(request):
 
 @login_required
 def history_lectures(request):
-    return render(request, "core/seminar.html")
+    my_lectures = request.user.attended_lectures.all()
+    return render(request, "core/history_lectures.html", {"my_lectures": my_lectures})
 
 
 @login_required

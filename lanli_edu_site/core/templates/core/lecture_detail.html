@@ -3,14 +3,14 @@
 {% block extra_js %}
 
 <script>
-$(document).on('click','a.button', function (event) {
+$(document).on('click','a.button-success', function (event) {
   event.preventDefault();
   $.ajax({
       method: "POST",
-      url: {% url "lecture_signup" %},
-      data: { user_id: {{request.user.id}}, lecture_id: {{id}} }
+      url: '{% url "lecture_signup" %}',
+      data: { user_id: 1, lecture_id: 2 }
     }).done(function( msg ) {
-        $.toast("报名成功！");
+        Zepto.toast("报名成功！");
         history.go(-1);
     });
 });
