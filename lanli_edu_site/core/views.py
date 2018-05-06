@@ -51,11 +51,9 @@ def lecture_detail(request, id):
 @login_required
 @csrf_exempt
 def lecture_signup(request):
-    user_id = request.POST.get("user_id")
     lecture_id = request.POST.get("lecture_id")
-    user = LanliUser.objects.get(id=user_id)
     lecture = Lecture.objects.get(id=lecture_id)
-    user.attended_lectures.add(lecture)
+    request.user.attended_lectures.add(lecture)
     return JsonResponse({
             'code': 0,
             'data': None,
