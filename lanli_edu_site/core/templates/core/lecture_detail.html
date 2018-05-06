@@ -3,9 +3,9 @@
 {% block extra_js %}
 
 <script>
-$(document).on('click','a.button-success', function (event) {
+jQuery(document).on('click','a.button-success', function (event) {
   event.preventDefault();
-  $.ajax({
+  jQuery.ajax({
       method: "POST",
       url: '{% url "lecture_signup" %}',
       data: { lecture_id: {{ id }} }
